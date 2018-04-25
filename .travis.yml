@@ -1,7 +1,0 @@
-language: java
-jdk: oraclejdk8
-deploy:
-  provider: s3
-  access_key_id: "AKIAJOP65SITX634BSEQ"
-  secret_access_key: "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"
-  bucket: "learn-travisci"
