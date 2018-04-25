@@ -1,0 +1,11 @@
+language: java
+jdk: oraclejdk8
+before_deploy:
+- git add *
+- git commit -m "any changes"
+deploy:
+  provider: s3
+  local_dir: target
+  access_key_id: "AKIAJOVIJS7CGBCUTALA"
+  secret_access_key: "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"
+  bucket: "sidbucketyash"
