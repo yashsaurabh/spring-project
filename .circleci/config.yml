@@ -1,15 +1,4 @@
 version: 2
-workflows:
-    version: 2
-    build-deploy:
-       jobs:
-          - build
-          - deploy:
-              requires:
-                - build
-              filters:
-                branches:
-                  only: master
 jobs:
   build:
     docker:
@@ -34,15 +23,18 @@ jobs:
 
       # run mvn install
       - run: mvn install
+       
+      - run:
+	  name: install python
+	  command: sudo apt-get install python2.7
 
-  deploy:
-    docker:
-      - image: circleci/openjdk:8-jdk
-    working_directory: ~/repo
-    steps:
+      - run:
+          name: install pip
+          command: sudo python2.7 get-pip.py
+
       - run:
           name: install aws cli
-          command: pip install awscli --upgrade --user
+          command: sudo pip install awscli --upgrade --user
       - run:
           name: Deploy to S3 if tests pass and branch is Master
           command: aws s3 sync target s3://sidbucketyash/deploy/ --delete
