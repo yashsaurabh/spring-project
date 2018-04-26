@@ -26,7 +26,9 @@ jobs:
        
       - run: sudo apt-get install python2.7
 
-      - run: sudo python2.7 get-pip.py
+      - run: curl -O https://bootstrap.pypa.io/get-pip.py
+
+      - run: sudo python get-pip.py --user
 
       - run: sudo pip install awscli --upgrade --user
 
