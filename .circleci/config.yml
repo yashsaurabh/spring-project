@@ -24,23 +24,15 @@ jobs:
       # run mvn install
       - run: mvn install
        
-      - run: sudo apt-get install python2.7
+      - run: curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
 
-      - run: curl -O https://bootstrap.pypa.io/get-pip.py
+      - run: sudo apt-get install unzip
 
-      - run: python get-pip.py --user
+      - run: unzip awscli-bundle.zip
 
-      - run: export PATH=$PATH:/home/circleci/.local/bin
+      - run: ./awscli-bundle/install -b ~/bin/aws
 
-      - run: echo $SHELL
-
-      - run: echo $0
-
-      - run: ls -a target
-
-      - run: ls -a ~
-
-      - run: echo $PATH
+      - run: export PATH=$PATH:~/bin
 
       - run: source ~/.profile
 
