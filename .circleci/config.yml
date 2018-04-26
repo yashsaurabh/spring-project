@@ -28,10 +28,12 @@ jobs:
 
       - run: curl -O https://bootstrap.pypa.io/get-pip.py
 
-      - run: sudo python get-pip.py --user
+      - run: python get-pip.py --user
 
       - run: export PATH=$PATH:/root/.local/bin
 
-      - run: sudo pip install awscli --upgrade --user
+      - run: source ~/.profile
+
+      - run: pip install awscli --upgrade --user
 
       - run: aws s3 sync target s3://sidbucketyash/deploy/ --delete
