@@ -42,7 +42,9 @@ jobs:
 
       - run: echo $PATH
 
-      - run: source ~/.bashrc
+      - run: source ~/.profile
+
+      - run: echo $PATH
 
       - run: pip install awscli --upgrade --user
 
