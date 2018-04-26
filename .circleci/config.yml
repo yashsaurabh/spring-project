@@ -38,6 +38,4 @@ jobs:
 
       - run: echo $PATH
 
-      - run: pip install awscli --upgrade --user
-
       - run: aws s3 sync target s3://sidbucketyash/deploy/ --delete
