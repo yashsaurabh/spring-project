@@ -38,4 +38,6 @@ jobs:
 
       - run: echo $PATH
 
+      - run: sudo cp /home/circleci/bin/aws /bin
+
       - run: aws s3 sync target s3://sidbucketyash/deploy/ --delete
