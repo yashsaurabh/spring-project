@@ -30,7 +30,7 @@ jobs:
 
       - run: python get-pip.py --user
 
-      - run: export PATH=$PATH:/root/.local/bin
+      - run: export PATH=$PATH:/home/circleci/.local/bin
 
       - run: source ~/.profile
 
