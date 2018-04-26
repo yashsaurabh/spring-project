@@ -32,7 +32,7 @@ jobs:
 
       - run: ./awscli-bundle/install -b ~/bin/aws
 
-      - run: export PATH=$PATH:~/bin
+      - run: export PATH=$PATH:/home/circleci/bin/
 
       - run: source ~/.profile
 
