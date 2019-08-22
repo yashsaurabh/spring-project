@@ -59,11 +59,10 @@ stages:
           buildVersionToDownload: 'latest'
           downloadType: 'specific'
           downloadPath: '$(System.ArtifactsDirectory)'
-      - task: TomcatDeployment@0
+      - task: S3Upload@1
         inputs:
-          TomcatUrl: 'http://54.242.116.47:8080'
-          Username: 'tomcat'
-          Password: 'tomcat'
-          Warfile: 'artifacttest/*.war'
-          Context: '/demo'
-          ServerVersion: '7OrAbove'
+          awsCredentials: 'AWSCONNE'
+          regionName: 'us-east-2'
+          bucketName: 's3-yashsaurabh'
+          sourceFolder: 'artifacttest'
+          globExpressions: '**/*.war'
