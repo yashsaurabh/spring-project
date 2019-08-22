@@ -64,5 +64,5 @@ stages:
           awsCredentials: 'AWSCONNE'
           regionName: 'us-east-2'
           bucketName: 's3-yashsaurabh'
-          sourceFolder: 'artifacttest'
-          globExpressions: '**/*.war'
+          sourceFolder: 'saurabh'
+          globExpressions: '**'
