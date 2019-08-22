@@ -5,30 +5,65 @@
 
 trigger:
 - master
+stages: 
+- stage: Build
+  displayName: Build and Artifact Stage
+  jobs:
+  - job: Build
+    displayName: Build Job
+    pool:
+      vmImage: 'ubuntu-16.04'
+    steps:
+    - task: Maven@3
+      inputs:
+          mavenPomFile: 'pom.xml'
+          goals: 'clean install package'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+    - task: CopyPublishBuildArtifacts@1
+      inputs:
+              CopyRoot: '$(system.defaultworkingdirectory)'
+              Contents: '**/*.war'
+              ArtifactName: 'artifacttest'
+              ArtifactType: 'Container'
+    - task: ArchiveFiles@2
+      inputs:
+                  rootFolderOrFile: '$(Build.BinariesDirectory)'
+                  includeRootFolder: true
+                  archiveType: 'zip'
+                  archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+                  replaceExistingArchive: true
 
-pool:
-  vmImage: 'ubuntu-latest'
 
-steps:
-- task: Maven@3
-  inputs:
-    mavenPomFile: 'pom.xml'
-    goals: 'clean install package'
-    publishJUnitResults: false
-    javaHomeOption: 'JDKVersion'
-    jdkVersionOption: '1.8'
-    mavenVersionOption: 'Default'
-    mavenOptions: '-Xmx3072m'
-    mavenAuthenticateFeed: false
-    effectivePomSkip: false
-    sonarQubeRunAnalysis: false
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
-    Contents: '**/*.war'
-    TargetFolder: '$(build.artifactstagingdirectory)'
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+
+
+- stage: Deploy
+  displayName: Deploy and Artifact Stage
+  jobs:
+    - job: Deploy
+      displayName: Deploy Job
+      pool:
+        vmImage: 'ubuntu-16.04'
+      steps:
+      - task: DownloadBuildArtifacts@0
+        inputs:
+          buildType: 'specific'
+          project: '4c64d572-b31f-4846-bd00-560b38eabd44'
+          pipeline: '78'
+          specificBuildWithTriggering: true
+          buildVersionToDownload: 'latest'
+          downloadType: 'specific'
+          downloadPath: '$(System.ArtifactsDirectory)'
+      - task: TomcatDeployment@0
+        inputs:
+          TomcatUrl: 'http://54.242.116.47:8080'
+          Username: 'tomcat'
+          Password: 'tomcat'
+          Warfile: 'artifacttest/*.war'
+          Context: '/demo'
+          ServerVersion: '7OrAbove'
