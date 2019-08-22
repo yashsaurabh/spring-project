@@ -49,12 +49,11 @@ stages:
       displayName: Deploy Job
       pool:
         vmImage: 'ubuntu-16.04'
-      steps:
-      
-      - task: S3Upload@1
-        inputs:
-          awsCredentials: 'AWSCONNE'
-          regionName: 'us-east-2'
-          bucketName: 's3-yashsaurabh'
-          sourceFolder: 'saurabh'
-          globExpressions: '**'
+steps:
+    - task: S3Upload@1
+      inputs:
+             awsCredentials: 'AWSCONNE'
+             regionName: 'us-east-1'
+             bucketName: 'yashsaurabhs3'
+             sourceFolder: 'saurabh'
+             globExpressions: '**'
