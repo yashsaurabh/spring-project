@@ -51,9 +51,9 @@ stages:
         vmImage: 'ubuntu-16.04'
       steps:
       - task: S3Upload@1
-      inputs:
-             awsCredentials: 'AWSCONNE'
-             regionName: 'us-east-1'
-             bucketName: 'yashsaurabhs3'
-             sourceFolder: 'saurabh'
-             globExpressions: '**'
+        inputs:
+               awsCredentials: 'AWSCONNE'
+               regionName: 'us-east-1'
+               bucketName: 'yashsaurabhs3'
+               sourceFolder: 'saurabh'
+               globExpressions: '**'
