@@ -50,15 +50,7 @@ stages:
       pool:
         vmImage: 'ubuntu-16.04'
       steps:
-      - task: DownloadBuildArtifacts@0
-        inputs:
-          buildType: 'specific'
-          project: '4c64d572-b31f-4846-bd00-560b38eabd44'
-          pipeline: '78'
-          specificBuildWithTriggering: true
-          buildVersionToDownload: 'latest'
-          downloadType: 'specific'
-          downloadPath: '$(System.ArtifactsDirectory)'
+      
       - task: S3Upload@1
         inputs:
           awsCredentials: 'AWSCONNE'
