@@ -1,0 +1,59 @@
+# Maven repo
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+trigger:
+- master
+stages: 
+- stage: Build
+  displayName: Build and Artifact Stage
+  jobs:
+  - job: Build
+    displayName: Build Job
+    pool:
+      vmImage: 'ubuntu-16.04'
+    steps:
+    - task: Maven@3
+      inputs:
+          mavenPomFile: 'pom.xml'
+          goals: 'clean install package'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+    - task: CopyPublishBuildArtifacts@1
+      inputs:
+              CopyRoot: '$(system.defaultworkingdirectory)'
+              Contents: '**/*.war'
+              ArtifactName: 'artifacttest'
+              ArtifactType: 'Container'
+    - task: ArchiveFiles@2
+      inputs:
+                  rootFolderOrFile: '$(Build.BinariesDirectory)'
+                  includeRootFolder: true
+                  archiveType: 'zip'
+                  archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+                  replaceExistingArchive: true
+
+
+
+
+- stage: Deploy
+  displayName: Deploy and Artifact Stage
+  jobs:
+    - job: Deploy
+      displayName: Deploy Job
+      pool:
+        vmImage: 'ubuntu-16.04'
+      steps:
+      - task: S3Upload@1
+        inputs:
+               awsCredentials: 'AWSCONNE'
+               regionName: 'us-east-1'
+               bucketName: 'yashsaurabhs3'
+               sourceFolder: 'artifacttest'
+               globExpressions: '**'
